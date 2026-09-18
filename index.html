@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!-- Deliberately NOT locking maximum-scale/user-scalable — patients up to 80 need to be able to zoom -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wait Time – Willow Creek ENT &amp; Sinus Center</title>
+<meta name="description" content="Check the current wait time at Willow Creek ENT & Sinus Center. No login needed. Updated every 5 minutes.">
+<meta name="robots" content="index,follow">
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="ENT Wait Time">
+<meta name="theme-color" content="#F5F7F8" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0E1817" media="(prefers-color-scheme: dark)">
+
+<!--
+  SEO NOTE FOR DEPLOYMENT (not achievable inside a preview link alone):
+  a real custom domain + sitemap entry + Google Business Profile wait-time link,
+  together with this JSON-LD, are what make "[clinic name] wait time" surface this
+  page in search. Replace every placeholder value below with real clinic data.
+-->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "MedicalClinic",
+  "name": "Willow Creek ENT & Sinus Center",
+  "medicalSpecialty": "Otolaryngologic",
+  "telephone": "+1-555-213-8420",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "4820 Willow Creek Blvd, Suite 210",
+    "addressLocality": "Example City",
+    "addressRegion": "CA"
+  }
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --bg:#F5F7F8;
+    --bg-elevated:#FFFFFF;
+    --ink:#16282A;
+    --ink-soft:#3E5153;
+    --ink-faint:#697B7C;
+    --border:#D8E0DF;
+    --brand:#2F6E68;
+    --brand-soft:#E7F0EE;
+    --low:#1D7A45;      --low-bg:#E5F4EC;
+    --moderate:#93500A; --moderate-bg:#FBF0DF;
+    --long:#A3342A;     --long-bg:#FBEAE8;
+    --closed:#525E60;   --closed-bg:#EAEDED;
+    --radius-sm:10px;
+    --radius-lg:18px;
+    --shadow: 0 1px 2px rgba(16,30,29,0.06), 0 4px 14px rgba(16,30,29,0.05);
+    --focus: 3px solid #2F6E68;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#0E1817; --bg-elevated:#15211F; --ink:#EAF2F0; --ink-soft:#B7C9C6; --ink-faint:#8CA09D;
+      --border:#25403C; --brand:#5FB3A9; --brand-soft:#173430;
+      --low:#4CC98A; --low-bg:#12301F; --moderate:#EDAA4C; --moderate-bg:#332508;
+      --long:#EC8879; --long-bg:#33150F; --closed:#A3B3B1; --closed-bg:#1C2725;
+      --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 4px 14px rgba(0,0,0,0.25);
+      --focus: 3px solid #5FB3A9;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#0E1817; --bg-elevated:#15211F; --ink:#EAF2F0; --ink-soft:#B7C9C6; --ink-faint:#8CA09D;
+    --border:#25403C; --brand:#5FB3A9; --brand-soft:#173430;
+    --low:#4CC98A; --low-bg:#12301F; --moderate:#EDAA4C; --moderate-bg:#332508;
+    --long:#EC8879; --long-bg:#33150F; --closed:#A3B3B1; --closed-bg:#1C2725;
+    --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 4px 14px rgba(0,0,0,0.25);
+    --focus: 3px solid #5FB3A9;
+  }
+
+  *{ box-sizing:border-box; }
+  html{ font-size:100%; } /* controlled by the text-size control below */
+  body{
+    margin:0; padding:0;
+    background:var(--bg); color:var(--ink);
+    font-family:'Public Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-size:1rem; line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{ max-width:520px; margin:0 auto; padding:0 18px 48px; }
+  a{ color:var(--brand); }
+  button{ font-family:inherit; }
+  :focus-visible{ outline:var(--focus); outline-offset:2px; }
+  .sr-only{
+    position:absolute; width:1px; height:1px; padding:0; margin:-1px;
+    overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0;
+  }
+  .skip-link{
+    position:absolute; left:10px; top:-60px;
+    background:var(--brand); color:#fff; padding:12px 18px;
+    border-radius:8px; z-index:200; text-decoration:none; font-weight:700;
+    font-size:0.95rem; transition:top .15s ease;
+  }
+  .skip-link:focus{ top:10px; }
+  @media (prefers-reduced-motion: reduce){ .skip-link{ transition:none; } }
+
+  /* ---------- Header + text size control ---------- */
+  header.site{
+    padding:20px 0 6px; display:flex; align-items:flex-start; justify-content:space-between; gap:10px; flex-wrap:wrap;
+  }
+  .brand-block{ display:flex; align-items:center; gap:12px; }
+  .clinic-mark{
+    width:42px; height:42px; border-radius:12px; background:var(--brand); color:#fff;
+    display:flex; align-items:center; justify-content:center; flex:none;
+  }
+  .clinic-mark svg{ width:24px; height:24px; }
+  .clinic-name{ font-weight:700; font-size:1.06rem; line-height:1.25; }
+  .clinic-sub{ color:var(--ink-soft); font-size:0.84rem; }
+
+  .text-size{ display:flex; align-items:center; gap:4px; flex:none; }
+  .text-size span.ts-label{ font-size:0.72rem; color:var(--ink-faint); margin-right:2px; }
+  .ts-btn{
+    border:1px solid var(--border); background:var(--bg-elevated); color:var(--ink-soft);
+    border-radius:8px; width:34px; height:34px; cursor:pointer; font-weight:700; line-height:1;
+  }
+  .ts-btn[aria-pressed="true"]{ background:var(--brand); border-color:var(--brand); color:#fff; }
+  .ts-btn.small{ font-size:0.72rem; }
+  .ts-btn.mid{ font-size:0.9rem; }
+  .ts-btn.large{ font-size:1.1rem; }
+
+  /* ---------- Status plate (hero — first thing after header) ---------- */
+  section.hero{ margin-top:10px; }
+  .plate{
+    background:var(--bg-elevated); border:1.5px solid var(--border); border-radius:var(--radius-lg);
+    box-shadow:var(--shadow); padding:24px 20px 20px; text-align:center;
+  }
+  .plate-row{ display:flex; align-items:center; justify-content:center; gap:8px; margin-bottom:10px; }
+  .status-dot{ width:11px; height:11px; border-radius:50%; flex:none; }
+  .status-label{ font-weight:700; font-size:0.95rem; }
+  .big-number{ font-weight:800; font-size:clamp(3rem, 14vw, 4.25rem); line-height:1; margin:4px 0 2px; letter-spacing:-0.02em; }
+  .big-number .unit{ font-size:0.36em; font-weight:600; margin-left:4px; }
+  .plate-meta{ color:var(--ink-soft); font-size:0.95rem; margin-top:2px; }
+  .plate-openuntil{ color:var(--ink-faint); font-size:0.82rem; margin-top:4px; }
+  .plate-updated{
+    display:flex; align-items:center; justify-content:center; gap:14px; margin-top:16px;
+    padding-top:14px; border-top:1px dashed var(--border); font-size:0.8rem; color:var(--ink-faint); flex-wrap:wrap;
+  }
+  .refresh-btn{
+    display:inline-flex; align-items:center; gap:6px; background:none; border:1px solid var(--border);
+    border-radius:999px; padding:7px 13px; font-size:0.8rem; color:var(--ink-soft); cursor:pointer; min-height:36px;
+  }
+  .refresh-btn:hover{ background:var(--brand-soft); }
+  .refresh-btn svg{ width:13px; height:13px; }
+  .refresh-btn.spinning svg{ animation: spin 0.6s linear; }
+  @media (prefers-reduced-motion: reduce){ .refresh-btn.spinning svg{ animation:none; } }
+  @keyframes spin{ from{ transform:rotate(0);} to{ transform:rotate(360deg);} }
+
+  .stale-warning{
+    margin-top:12px; font-size:0.8rem; color:var(--long); background:var(--long-bg);
+    border-radius:8px; padding:9px 11px; display:none; text-align:left;
+  }
+  .stale-warning.show{ display:block; }
+
+  /* ---------- Closed / hours callout — prominent, right below hero ---------- */
+  .hours-callout{
+    display:none;
+    margin-top:12px; background:var(--closed-bg); border:1.5px solid var(--border);
+    border-radius:var(--radius-lg); padding:16px 18px;
+  }
+  .hours-callout.show{ display:block; }
+  .hours-callout-title{ font-weight:700; font-size:1rem; display:flex; align-items:center; gap:8px; }
+  .hours-callout-title svg{ width:18px; height:18px; color:var(--closed); flex:none; }
+  .hours-callout-next{ margin-top:6px; font-size:0.95rem; color:var(--ink-soft); }
+  .hours-callout-week{ margin-top:12px; padding-top:12px; border-top:1px solid var(--border); font-size:0.85rem; color:var(--ink-soft); }
+  .hours-callout-week div{ display:flex; justify-content:space-between; padding:2px 0; }
+  .hours-callout-week .is-today{ color:var(--ink); font-weight:700; }
+
+  /* ---------- Section headings ---------- */
+  section{ margin-top:26px; }
+  h2{ font-size:1rem; font-weight:700; margin:0 0 4px; }
+  .section-sub{ color:var(--ink-soft); font-size:0.84rem; margin:0 0 14px; }
+
+  /* ---------- Day picker (secondary control) ---------- */
+  .day-picker{ display:flex; gap:6px; overflow-x:auto; padding-bottom:2px; margin-bottom:14px; scrollbar-width:none; }
+  .day-picker::-webkit-scrollbar{ display:none; }
+  .day-chip{
+    flex:none; border:1px solid var(--border); background:var(--bg-elevated); color:var(--ink-soft);
+    border-radius:999px; padding:7px 14px; font-size:0.84rem; font-weight:600; cursor:pointer; min-height:38px;
+  }
+  .day-chip[aria-pressed="true"]{ background:var(--brand); border-color:var(--brand); color:#fff; }
+  .day-chip .today-mark{ font-weight:400; opacity:0.85; }
+
+  /* ---------- Trend chart ---------- */
+  .chart-card{ background:var(--bg-elevated); border:1px solid var(--border); border-radius:var(--radius-lg); box-shadow:var(--shadow); padding:16px 16px 14px; }
+  .chart-detail{
+    font-size:0.85rem; color:var(--ink-soft); min-height:1.3em; margin:0 0 12px; padding:8px 10px;
+    background:var(--brand-soft); border-radius:8px;
+  }
+  .chart-closed{ text-align:center; color:var(--ink-soft); font-size:0.9rem; padding:24px 8px; }
+  .bars{ display:flex; align-items:flex-end; gap:6px; height:120px; }
+  .bar-col{ flex:1; display:flex; flex-direction:column; align-items:center; justify-content:flex-end; height:100%; }
+  .bar-btn{
+    width:100%; max-width:28px; border:0; padding:0; background:none; cursor:pointer;
+    display:flex; flex-direction:column; align-items:center; height:100%; justify-content:flex-end;
+  }
+  .bar{ width:100%; border-radius:5px 5px 2px 2px; background:var(--closed); }
+  .bar.low{ background:var(--low); }
+  .bar.moderate{ background:var(--moderate); }
+  .bar.long{ background:var(--long); }
+  .bar-btn.is-now .bar{ box-shadow:0 0 0 2px var(--bg-elevated), 0 0 0 3.5px var(--brand); }
+  .now-flag{ font-size:0.68rem; font-weight:700; color:var(--brand); margin-bottom:4px; }
+  .bar-hour{ font-size:0.68rem; color:var(--ink-faint); margin-top:6px; }
+  .legend{ display:flex; gap:14px; flex-wrap:wrap; margin-top:16px; padding-top:14px; border-top:1px solid var(--border); }
+  .legend-item{ display:flex; align-items:center; gap:6px; font-size:0.8rem; color:var(--ink-soft); }
+  .legend-dot{ width:9px; height:9px; border-radius:50%; }
+
+  /* ---------- Suggested windows ---------- */
+  .windows{ display:flex; flex-wrap:wrap; gap:8px; margin-top:14px; }
+  .window-chip{
+    background:var(--low-bg); color:var(--low); border-radius:999px; padding:7px 13px;
+    font-size:0.85rem; font-weight:700; display:flex; align-items:center; gap:6px;
+  }
+  .window-chip svg{ width:14px; height:14px; }
+  .no-windows{ color:var(--ink-soft); font-size:0.85rem; }
+
+  /* ---------- Quick actions ---------- */
+  .actions{ display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; }
+  .action-btn{
+    background:var(--bg-elevated); border:1px solid var(--border); border-radius:var(--radius-sm);
+    padding:14px 6px 12px; text-align:center; text-decoration:none; color:var(--ink);
+    display:flex; flex-direction:column; align-items:center; gap:6px; font-size:0.8rem; font-weight:600;
+    min-height:44px; justify-content:center;
+  }
+  .action-btn:hover{ border-color:var(--brand); }
+  .action-btn svg{ width:20px; height:20px; color:var(--brand); }
+
+  /* ---------- Bookmark tip — moved below primary content, kept slim ---------- */
+  .tip{
+    background:var(--brand-soft); border:1px solid var(--border); border-radius:var(--radius-sm);
+    padding:10px 12px; display:flex; align-items:center; gap:10px; font-size:0.82rem; color:var(--ink-soft);
+  }
+  .tip svg{ flex:none; width:18px; height:18px; color:var(--brand); }
+  .tip button{ margin-left:auto; background:none; border:0; color:var(--ink-faint); font-size:0.8rem; cursor:pointer; padding:4px 6px; flex:none; }
+
+  /* ---------- Trust footer ---------- */
+  .trust{ background:var(--bg-elevated); border:1px solid var(--border); border-radius:var(--radius-lg); padding:16px 16px; font-size:0.82rem; color:var(--ink-soft); }
+  .trust ul{ margin:8px 0 0; padding-left:18px; }
+  .trust li{ margin-bottom:4px; }
+  .full-hours{ margin-top:12px; padding-top:12px; border-top:1px dashed var(--border); }
+  .full-hours div{ display:flex; justify-content:space-between; padding:2px 0; }
+  .emergency{ margin-top:12px; padding-top:12px; border-top:1px dashed var(--border); font-size:0.8rem; color:var(--long); }
+  .close-note{ text-align:center; color:var(--ink-faint); font-size:0.8rem; margin-top:18px; }
+
+  /* ---------- Demo/build panel ---------- */
+  .demo-panel{ margin-top:34px; border:1px dashed var(--ink-faint); border-radius:var(--radius-sm); padding:14px; font-size:0.8rem; color:var(--ink-faint); }
+  .demo-panel summary{ cursor:pointer; font-weight:600; color:var(--ink-soft); }
+  .demo-row{ display:flex; gap:6px; flex-wrap:wrap; margin-top:10px; }
+  .demo-btn{ border:1px solid var(--border); background:var(--bg); color:var(--ink-soft); border-radius:8px; padding:6px 10px; font-size:0.76rem; cursor:pointer; }
+  .demo-btn[aria-pressed="true"]{ background:var(--brand); color:#fff; border-color:var(--brand); }
+</style>
+</head>
+<body>
+<a href="#waitPlate" class="skip-link">Skip to current wait time</a>
+
+<div class="wrap">
+
+  <header class="site">
+    <div class="brand-block">
+      <div class="clinic-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M8 12a5 5 0 0 1 9-3c1 1.2 1 2.5.5 4-1 3-4 2-4.5 4.5-.4 2 1 3 3 2.5"/>
+          <path d="M8 12c0-4.4 3.6-8 8-8"/>
+        </svg>
+      </div>
+      <div>
+        <div class="clinic-name">Willow Creek ENT &amp; Sinus Center</div>
+        <div class="clinic-sub">Wait time — no login needed</div>
+      </div>
+    </div>
+    <div class="text-size" role="group" aria-label="Text size">
+      <span class="ts-label">Text size</span>
+      <button type="button" class="ts-btn small" data-scale="0" aria-pressed="true" aria-label="Normal text size">A</button>
+      <button type="button" class="ts-btn mid" data-scale="1" aria-pressed="false" aria-label="Large text size">A</button>
+      <button type="button" class="ts-btn large" data-scale="2" aria-pressed="false" aria-label="Extra large text size">A</button>
+    </div>
+  </header>
+
+  <!-- ===== Hero: current wait, instantly, nothing above it but the header ===== -->
+  <section class="hero" aria-labelledby="liveHeading">
+    <h2 id="liveHeading" class="sr-only">Current wait time</h2>
+    <div class="plate" id="waitPlate" tabindex="-1">
+      <div aria-live="polite" aria-atomic="true">
+        <div class="plate-row">
+          <span class="status-dot" id="statusDot" aria-hidden="true"></span>
+          <span class="status-label" id="statusLabel">Checking…</span>
+        </div>
+        <div class="big-number" id="bigNumber">–</div>
+        <div class="plate-meta" id="queueMeta">Loading current queue…</div>
+        <div class="plate-openuntil" id="openUntil"></div>
+      </div>
+
+      <div class="plate-updated">
+        <span id="updatedText">Last updated —</span>
+        <span id="countdownText">Next update in —</span>
+        <button type="button" class="refresh-btn" id="refreshBtn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 1 1-2.6-6.4"/><path d="M21 4v5h-5"/></svg>
+          <span id="refreshBtnLabel">Refresh now</span>
+        </button>
+      </div>
+      <div class="stale-warning" id="staleWarning">
+        This reading hasn't refreshed in a while — numbers may be out of date. Try refreshing, or call the front desk to confirm.
+      </div>
+    </div>
+
+    <!-- Only shown when the clinic is closed, right below the hero, as requested -->
+    <div class="hours-callout" id="hoursCallout">
+      <div class="hours-callout-title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+        We're closed right now
+      </div>
+      <div class="hours-callout-next" id="hoursCalloutNext"></div>
+      <div class="hours-callout-week" id="hoursCalloutWeek"></div>
+    </div>
+  </section>
+
+  <!-- ===== Typical trend — secondary info, below the live number as requested ===== -->
+  <section aria-labelledby="trendHeading">
+    <h2 id="trendHeading">Typical wait by time of day</h2>
+    <p class="section-sub">Based on past visits — not today's live data.</p>
+
+    <div class="day-picker" id="dayPicker" role="group" aria-label="Choose a day to view"></div>
+
+    <div class="chart-card">
+      <p class="chart-detail" id="chartDetail">Tap, or tab through, any bar below for that hour's typical wait.</p>
+      <div id="chartArea"></div>
+      <ul class="sr-only" id="chartSrList" aria-hidden="false"></ul>
+      <div class="legend">
+        <span class="legend-item"><span class="legend-dot" style="background:var(--low)"></span>Low (under 15 min)</span>
+        <span class="legend-item"><span class="legend-dot" style="background:var(--moderate)"></span>Moderate (15–30 min)</span>
+        <span class="legend-item"><span class="legend-dot" style="background:var(--long)"></span>Long (over 30 min)</span>
+      </div>
+    </div>
+
+    <div style="margin-top:16px;">
+      <h2 style="font-size:0.9rem;">Best times to walk in</h2>
+      <div class="windows" id="windowsArea"></div>
+    </div>
+  </section>
+
+  <!-- ===== Quick actions ===== -->
+  <section aria-labelledby="actionsHeading">
+    <h2 id="actionsHeading" class="sr-only">Quick actions</h2>
+    <div class="actions">
+      <a class="action-btn" href="tel:+15552138420">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.6a2 2 0 0 1-.4 2.1L8.1 9.6a16 16 0 0 0 6 6l1.2-1.2a2 2 0 0 1 2.1-.4c.8.3 1.7.5 2.6.6a2 2 0 0 1 1.7 2z"/></svg>
+        Call clinic
+      </a>
+      <a class="action-btn" href="https://maps.google.com/?q=4820+Willow+Creek+Blvd" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 12-9 12s-9-5-9-12a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        Directions
+      </a>
+      <a class="action-btn" href="#fullHours">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+        Hours
+      </a>
+    </div>
+  </section>
+
+  <!-- ===== Bookmark tip — kept, but now below the primary flow, not competing with the hero ===== -->
+  <section>
+    <div class="tip" id="bookmarkTip">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 4h12v16l-6-4-6 4V4z"/></svg>
+      <span>Bookmark this page, or add it to your home screen, to check wait time again without searching.</span>
+      <button type="button" id="dismissTip" aria-label="Dismiss tip">✕</button>
+    </div>
+  </section>
+
+  <!-- ===== Trust / privacy ===== -->
+  <section aria-labelledby="trustHeading">
+    <h2 id="trustHeading" class="sr-only">About this page</h2>
+    <div class="trust">
+      <strong style="color:var(--ink);">About this page</strong>
+      <ul>
+        <li>No account or login — this page works for guests only.</li>
+        <li>Nothing you enter is saved. We don't collect names, symptoms, or any health information.</li>
+        <li>Wait times are estimates from the clinic's queue system and can change quickly.</li>
+      </ul>
+      <div class="full-hours" id="fullHours">
+        <strong style="color:var(--ink); font-size:0.82rem;">Hours</strong>
+        <div id="fullHoursList" style="margin-top:6px;"></div>
+      </div>
+      <div class="emergency">If this is a medical emergency, call 911 or go to your nearest emergency room.</div>
+    </div>
+    <div class="close-note">Nothing to log out of — you can just close this tab.</div>
+  </section>
+
+  <!-- ===== Build/demo controls — not part of the patient-facing product ===== -->
+  <details class="demo-panel">
+    <summary>Preview other scenarios (for building/testing — patients won't see this)</summary>
+    <div class="demo-row" id="demoRow"></div>
+  </details>
+
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ---------------- Mock "typical" historical data ----------------
+     Represents an average of past visits per hour, per weekday.
+     In production this comes from the clinic's analytics API, not this file. */
+  var TYPICAL = {
+    Sun: null,
+    Mon: [[8,9],[9,16],[10,24],[11,29],[12,19],[13,12],[14,23],[15,32],[16,27],[17,15]],
+    Tue: [[8,8],[9,14],[10,21],[11,26],[12,17],[13,11],[14,20],[15,28],[16,24],[17,13]],
+    Wed: [[8,10],[9,18],[10,27],[11,33],[12,21],[13,13],[14,26],[15,35],[16,29],[17,17]],
+    Thu: [[8,9],[9,15],[10,22],[11,27],[12,18],[13,12],[14,21],[15,29],[16,25],[17,14]],
+    Fri: [[8,11],[9,19],[10,25],[11,22],[12,16],[13,10],[14,18],[15,23],[16,20],[17,12]],
+    Sat: [[9,13],[10,20],[11,16],[12,9]],
+  };
+  var HOURS = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  var HOURS_OPEN = { Sun:null, Mon:[8,18], Tue:[8,18], Wed:[8,18], Thu:[8,18], Fri:[8,18], Sat:[9,13] };
+
+  function classify(mins){
+    if(mins == null) return 'closed';
+    if(mins < 15) return 'low';
+    if(mins <= 30) return 'moderate';
+    return 'long';
+  }
+  function classifyLabel(cls){
+    return { low:'Low wait', moderate:'Moderate wait', long:'Long wait', closed:'Closed now', error:'Wait time unavailable' }[cls];
+  }
+  function fmtHour(h){
+    var period = h >= 12 ? 'PM' : 'AM';
+    var hr = h % 12; if(hr===0) hr=12;
+    return hr + ':00 ' + period;
+  }
+  function fmtHourShort(h){ var hr = h % 12; if(hr===0) hr=12; return hr + (h>=12?'p':'a'); }
+
+  var now = new Date();
+  var todayKey = HOURS[now.getDay()];
+
+  var state = { scenario:'live', selectedDay: todayKey, lastUpdated: null, countdownSec: 300 };
+
+  var el = {
+    statusDot: document.getElementById('statusDot'),
+    statusLabel: document.getElementById('statusLabel'),
+    bigNumber: document.getElementById('bigNumber'),
+    queueMeta: document.getElementById('queueMeta'),
+    openUntil: document.getElementById('openUntil'),
+    updatedText: document.getElementById('updatedText'),
+    countdownText: document.getElementById('countdownText'),
+    refreshBtn: document.getElementById('refreshBtn'),
+    refreshBtnLabel: document.getElementById('refreshBtnLabel'),
+    staleWarning: document.getElementById('staleWarning'),
+    hoursCallout: document.getElementById('hoursCallout'),
+    hoursCalloutNext: document.getElementById('hoursCalloutNext'),
+    hoursCalloutWeek: document.getElementById('hoursCalloutWeek'),
+    fullHoursList: document.getElementById('fullHoursList'),
+    dayPicker: document.getElementById('dayPicker'),
+    chartArea: document.getElementById('chartArea'),
+    chartDetail: document.getElementById('chartDetail'),
+    chartSrList: document.getElementById('chartSrList'),
+    windowsArea: document.getElementById('windowsArea'),
+    demoRow: document.getElementById('demoRow'),
+    bookmarkTip: document.getElementById('bookmarkTip'),
+    dismissTip: document.getElementById('dismissTip'),
+  };
+
+  /* ---------------- Text size control ---------------- */
+  var SCALES = ['100%','115%','130%'];
+  var tsButtons = document.querySelectorAll('.ts-btn');
+  function applyScale(idx){
+    document.documentElement.style.fontSize = SCALES[idx];
+    tsButtons.forEach(function(b){ b.setAttribute('aria-pressed', String(Number(b.dataset.scale) === idx)); });
+    try { localStorage.setItem('entWait_textScale', String(idx)); } catch(e){}
+  }
+  var savedScale = 0;
+  try { savedScale = Number(localStorage.getItem('entWait_textScale')) || 0; } catch(e){}
+  applyScale(savedScale);
+  tsButtons.forEach(function(b){
+    b.addEventListener('click', function(){ applyScale(Number(b.dataset.scale)); });
+  });
+
+  /* ---------------- Bookmark tip dismiss (per-device convenience only) ---------------- */
+  try {
+    if (localStorage.getItem('entWaitTip_dismissed') === '1') { el.bookmarkTip.closest('section').style.display = 'none'; }
+  } catch(e){}
+  el.dismissTip.addEventListener('click', function(){
+    el.bookmarkTip.closest('section').style.display = 'none';
+    try { localStorage.setItem('entWaitTip_dismissed','1'); } catch(e){}
+  });
+
+  /* ---------------- Full weekly hours (always visible in footer) ---------------- */
+  (function renderFullHours(){
+    el.fullHoursList.innerHTML = '';
+    HOURS.forEach(function(key){
+      var row = document.createElement('div');
+      var range = HOURS_OPEN[key];
+      row.innerHTML = '<span>' + key + '</span><span>' + (range ? (fmtHour(range[0]) + ' – ' + fmtHour(range[1])) : 'Closed') + '</span>';
+      if(key === todayKey) row.style.fontWeight = '700';
+      el.fullHoursList.appendChild(row);
+    });
+  })();
+
+  /* ---------------- Mock live wait generator ---------------- */
+  function isOpenNow(){
+    var d = new Date();
+    var range = HOURS_OPEN[HOURS[d.getDay()]];
+    if(!range) return false;
+    var h = d.getHours() + d.getMinutes()/60;
+    return h >= range[0] && h < range[1];
+  }
+  function typicalForHour(dayKey, hour){
+    var rows = TYPICAL[dayKey];
+    if(!rows) return null;
+    var closest = null, bestDiff = Infinity;
+    rows.forEach(function(r){ var diff = Math.abs(r[0]-hour); if(diff < bestDiff){ bestDiff = diff; closest = r[1]; } });
+    return closest;
+  }
+  function computeLiveMock(){
+    if(!isOpenNow()) return { status:'closed', mins:null, queue:0 };
+    var d = new Date();
+    var base = typicalForHour(HOURS[d.getDay()], d.getHours()) || 15;
+    var noise = Math.round((Math.random()-0.5) * base * 0.4);
+    var mins = Math.max(2, base + noise);
+    var queue = Math.max(0, Math.round(mins/7 + (Math.random()>0.5?1:0)));
+    return { status: classify(mins), mins: mins, queue: queue };
+  }
+  var SCENARIO_FIXTURES = {
+    low:      { status:'low',      mins:8,  queue:1 },
+    moderate: { status:'moderate', mins:22, queue:3 },
+    long:     { status:'long',     mins:42, queue:7 },
+    closed:   { status:'closed',   mins:null, queue:0 },
+    error:    { status:'error',    mins:null, queue:0 }
+  };
+
+  function nextOpenInfo(){
+    var d = new Date();
+    var idx = d.getDay();
+    for(var i=0;i<7;i++){
+      var key = HOURS[(idx+i) % 7];
+      var range = HOURS_OPEN[key];
+      if(range){
+        var label = i===0 ? 'today' : (i===1 ? 'tomorrow' : 'on ' + key);
+        return 'Opens ' + label + ' at ' + fmtHour(range[0]) + '.';
+      }
+    }
+    return 'Check back during clinic hours.';
+  }
+
+  /* ---------------- Render: status plate ---------------- */
+  function renderPlate(){
+    var data = state.scenario === 'live' ? computeLiveMock() : SCENARIO_FIXTURES[state.scenario];
+
+    el.statusDot.style.background = data.status === 'error' ? 'var(--closed)' : 'var(--' + data.status + ')';
+    el.statusLabel.style.color = data.status === 'error' ? 'var(--closed)' : 'var(--' + data.status + ')';
+    el.statusLabel.textContent = classifyLabel(data.status);
+    el.openUntil.textContent = '';
+    el.refreshBtnLabel.textContent = 'Refresh now';
+
+    if(data.status === 'error'){
+      el.bigNumber.innerHTML = '—';
+      el.bigNumber.style.color = 'var(--closed)';
+      el.queueMeta.textContent = "We couldn't load today's wait time. Try refreshing, or call the front desk for the latest update.";
+      el.refreshBtnLabel.textContent = 'Try again';
+    } else if(data.status === 'closed'){
+      el.bigNumber.innerHTML = 'Closed';
+      el.bigNumber.style.color = 'var(--closed)';
+      el.queueMeta.textContent = 'The clinic is closed right now.';
+    } else {
+      el.bigNumber.innerHTML = data.mins + '<span class="unit">min</span>';
+      el.bigNumber.style.color = 'var(--' + data.status + ')';
+      el.queueMeta.textContent = data.queue + (data.queue===1 ? ' patient ahead of you' : ' patients ahead of you');
+      var range = HOURS_OPEN[todayKey];
+      if(range) el.openUntil.textContent = 'Open until ' + fmtHour(range[1]);
+    }
+
+    // Closed-state hours callout — prominent, directly below the hero, per the requested flow
+    if(data.status === 'closed'){
+      el.hoursCallout.classList.add('show');
+      el.hoursCalloutNext.textContent = nextOpenInfo();
+      el.hoursCalloutWeek.innerHTML = '';
+      HOURS.forEach(function(key){
+        var row = document.createElement('div');
+        var range2 = HOURS_OPEN[key];
+        row.className = key === todayKey ? 'is-today' : '';
+        row.innerHTML = '<span>' + key + '</span><span>' + (range2 ? (fmtHour(range2[0]) + ' – ' + fmtHour(range2[1])) : 'Closed') + '</span>';
+        el.hoursCalloutWeek.appendChild(row);
+      });
+    } else {
+      el.hoursCallout.classList.remove('show');
+    }
+
+    state.lastUpdated = new Date();
+    state.countdownSec = 300;
+    updateTimestampText();
+    el.staleWarning.classList.remove('show');
+  }
+
+  function updateTimestampText(){
+    if(!state.lastUpdated) return;
+    var secondsAgo = Math.floor((Date.now() - state.lastUpdated.getTime())/1000);
+    var label = secondsAgo < 60 ? 'just now' : Math.floor(secondsAgo/60) + ' min ago';
+    el.updatedText.textContent = 'Updated ' + label;
+    var m = Math.floor(state.countdownSec/60), s = state.countdownSec%60;
+    el.countdownText.textContent = 'Next update in ' + m + ':' + (s<10?'0':'') + s;
+    if(secondsAgo > 900){ el.staleWarning.classList.add('show'); }
+  }
+
+  function doRefresh(manual){
+    if(manual){
+      el.refreshBtn.classList.add('spinning');
+      setTimeout(function(){ el.refreshBtn.classList.remove('spinning'); }, 650);
+    }
+    renderPlate();
+  }
+  el.refreshBtn.addEventListener('click', function(){ doRefresh(true); });
+
+  setInterval(function(){
+    state.countdownSec = Math.max(0, state.countdownSec - 1);
+    if(state.countdownSec === 0){ doRefresh(false); } else { updateTimestampText(); }
+  }, 1000);
+
+  /* ---------------- Day picker ---------------- */
+  function renderDayPicker(){
+    el.dayPicker.innerHTML = '';
+    HOURS.forEach(function(key){
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'day-chip';
+      btn.setAttribute('aria-pressed', String(key === state.selectedDay));
+      btn.innerHTML = key + (key === todayKey ? ' <span class="today-mark">· today</span>' : '');
+      btn.addEventListener('click', function(){
+        state.selectedDay = key;
+        renderDayPicker(); renderChart(); renderWindows();
+      });
+      el.dayPicker.appendChild(btn);
+    });
+  }
+
+  /* ---------------- Trend chart — value shown on tap/focus, not hover-only, plus a full sr-only list ---------------- */
+  function renderChart(){
+    var rows = TYPICAL[state.selectedDay];
+    el.chartArea.innerHTML = '';
+    el.chartSrList.innerHTML = '';
+    if(!rows){
+      el.chartArea.innerHTML = '<div class="chart-closed">Closed all day on ' + state.selectedDay + 'days — no typical data to show.</div>';
+      el.chartDetail.textContent = 'This day is closed all day.';
+      return;
+    }
+    var max = Math.max.apply(null, rows.map(function(r){return r[1];})) * 1.15;
+    var bars = document.createElement('div');
+    bars.className = 'bars';
+    var isToday = state.selectedDay === todayKey;
+    var currentHour = new Date().getHours();
+    var defaultDetailSet = false;
+
+    rows.forEach(function(pair){
+      var hour = pair[0], val = pair[1], cls = classify(val);
+      var isNow = isToday && hour === currentHour && isOpenNow();
+      var detailText = fmtHour(hour) + ' — about ' + val + ' min typical (' + classifyLabel(cls).replace(' wait','').toLowerCase() + ' wait)';
+
+      var col = document.createElement('button');
+      col.type = 'button';
+      col.className = 'bar-btn' + (isNow ? ' is-now' : '');
+      col.setAttribute('aria-label', detailText + (isNow ? ', current hour' : ''));
+      col.addEventListener('click', function(){ el.chartDetail.textContent = detailText; });
+      col.addEventListener('focus', function(){ el.chartDetail.textContent = detailText; });
+
+      if(isNow){
+        var flag = document.createElement('span'); flag.className = 'now-flag'; flag.textContent = 'Now';
+        col.appendChild(flag);
+      }
+      var bar = document.createElement('span');
+      bar.className = 'bar ' + cls;
+      bar.style.height = Math.max(6, (val/max)*100) + '%';
+      col.appendChild(bar);
+
+      var lbl = document.createElement('span'); lbl.className = 'bar-hour'; lbl.setAttribute('aria-hidden','true'); lbl.textContent = fmtHourShort(hour);
+      col.appendChild(lbl);
+
+      var wrap = document.createElement('div');
+      wrap.className = 'bar-col';
+      wrap.appendChild(col);
+      bars.appendChild(wrap);
+
+      var li = document.createElement('li');
+      li.textContent = detailText;
+      el.chartSrList.appendChild(li);
+
+      if(isNow && !defaultDetailSet){ el.chartDetail.textContent = detailText; defaultDetailSet = true; }
+    });
+    el.chartArea.appendChild(bars);
+    if(!defaultDetailSet){ el.chartDetail.textContent = 'Tap, or tab through, any bar below for that hour\'s typical wait.'; }
+  }
+
+  function renderWindows(){
+    var rows = TYPICAL[state.selectedDay];
+    el.windowsArea.innerHTML = '';
+    if(!rows){
+      el.windowsArea.innerHTML = '<p class="no-windows">Closed all day — no walk-in windows to suggest.</p>';
+      return;
+    }
+    var ranges = [], current = null;
+    rows.forEach(function(pair){
+      var hour = pair[0], val = pair[1];
+      if(val < 15){
+        if(current && current.end === hour){ current.end = hour+1; }
+        else { current = {start:hour, end:hour+1}; ranges.push(current); }
+      } else { current = null; }
+    });
+    if(ranges.length === 0){
+      el.windowsArea.innerHTML = '<p class="no-windows">No typically-low window on ' + state.selectedDay + 'days — moderate waits are common all day.</p>';
+      return;
+    }
+    ranges.forEach(function(r){
+      var chip = document.createElement('span');
+      chip.className = 'window-chip';
+      chip.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>' + fmtHour(r.start) + ' – ' + fmtHour(r.end);
+      el.windowsArea.appendChild(chip);
+    });
+  }
+
+  /* ---------------- Demo scenario panel ---------------- */
+  function renderDemoPanel(){
+    var options = [
+      {key:'live', label:'Live (default)'}, {key:'low', label:'Low'}, {key:'moderate', label:'Moderate'},
+      {key:'long', label:'Long'}, {key:'closed', label:'Closed'}, {key:'error', label:'Data unavailable'}
+    ];
+    el.demoRow.innerHTML = '';
+    options.forEach(function(opt){
+      var b = document.createElement('button');
+      b.type = 'button'; b.className = 'demo-btn'; b.textContent = opt.label;
+      b.setAttribute('aria-pressed', String(state.scenario === opt.key));
+      b.addEventListener('click', function(){
+        state.scenario = opt.key;
+        Array.prototype.forEach.call(el.demoRow.children, function(child, i){ child.setAttribute('aria-pressed', String(options[i].key === opt.key)); });
+        doRefresh(true);
+      });
+      el.demoRow.appendChild(b);
+    });
+  }
+
+  /* ---------------- Init ---------------- */
+  renderDayPicker();
+  renderChart();
+  renderWindows();
+  renderDemoPanel();
+  renderPlate();
+})();
+</script>
+</body>
+</html>
