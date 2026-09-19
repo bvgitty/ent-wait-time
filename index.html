@@ -129,6 +129,32 @@
   .ts-btn.mid{ font-size:0.9rem; }
   .ts-btn.large{ font-size:1.1rem; }
 
+  .header-controls{ display:flex; align-items:center; gap:14px; flex:none; }
+
+  /* ---------- Theme (dark mode) switch ---------- */
+  .theme-switch{
+    display:inline-flex; align-items:center; gap:6px; border:0; background:none; padding:2px; margin:0;
+    cursor:pointer; flex:none;
+  }
+  .theme-switch-icon{ width:15px; height:15px; flex:none; color:var(--ink-faint); transition:color .15s ease; }
+  .theme-switch-icon.sun{ color:var(--brand); }
+  .theme-switch[aria-checked="true"] .theme-switch-icon.sun{ color:var(--ink-faint); }
+  .theme-switch[aria-checked="true"] .theme-switch-icon.moon{ color:var(--brand); }
+  .theme-switch-track{
+    position:relative; width:40px; height:22px; border-radius:999px;
+    background:var(--border); flex:none; transition:background-color .15s ease;
+  }
+  .theme-switch-thumb{
+    position:absolute; top:2px; left:2px; width:18px; height:18px; border-radius:50%;
+    background:var(--bg-elevated); box-shadow:0 1px 2px rgba(0,0,0,0.25);
+    transition:transform .15s ease;
+  }
+  .theme-switch[aria-checked="true"] .theme-switch-track{ background:var(--brand); }
+  .theme-switch[aria-checked="true"] .theme-switch-thumb{ transform:translateX(18px); }
+  @media (prefers-reduced-motion: reduce){
+    .theme-switch-track, .theme-switch-thumb, .theme-switch-icon{ transition:none; }
+  }
+
   /* ---------- Status plate (hero — first thing after header) ---------- */
   section.hero{ margin-top:10px; }
   .plate{
@@ -278,11 +304,25 @@
         <div class="clinic-sub">Wait time — no login needed</div>
       </div>
     </div>
-    <div class="text-size" role="group" aria-label="Text size">
-      <span class="ts-label">Text size</span>
-      <button type="button" class="ts-btn small" data-scale="0" aria-pressed="true" aria-label="Normal text size">A</button>
-      <button type="button" class="ts-btn mid" data-scale="1" aria-pressed="false" aria-label="Large text size">A</button>
-      <button type="button" class="ts-btn large" data-scale="2" aria-pressed="false" aria-label="Extra large text size">A</button>
+    <div class="header-controls">
+      <div class="text-size" role="group" aria-label="Text size">
+        <span class="ts-label">Text size</span>
+        <button type="button" class="ts-btn small" data-scale="0" aria-pressed="true" aria-label="Normal text size">A</button>
+        <button type="button" class="ts-btn mid" data-scale="1" aria-pressed="false" aria-label="Large text size">A</button>
+        <button type="button" class="ts-btn large" data-scale="2" aria-pressed="false" aria-label="Extra large text size">A</button>
+      </div>
+      <button type="button" class="theme-switch" id="themeSwitch" role="switch" aria-checked="false" aria-label="Dark mode">
+        <svg class="theme-switch-icon sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="4"></circle>
+          <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path>
+        </svg>
+        <span class="theme-switch-track" aria-hidden="true">
+          <span class="theme-switch-thumb"></span>
+        </span>
+        <svg class="theme-switch-icon moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        </svg>
+      </button>
     </div>
   </header>
 
@@ -481,6 +521,52 @@
   applyScale(savedScale);
   tsButtons.forEach(function(b){
     b.addEventListener('click', function(){ applyScale(Number(b.dataset.scale)); });
+  });
+
+  /* ---------------- Dark mode toggle ---------------- */
+  var THEME_KEY = 'entWait_theme';
+  var THEME_COLORS = { light: '#F5F7F8', dark: '#0E1817' };
+  var themeSwitch = document.getElementById('themeSwitch');
+  var themeColorMetas = document.querySelectorAll('meta[name="theme-color"]');
+  var prefersDarkMQ = window.matchMedia('(prefers-color-scheme: dark)');
+
+  function setThemeSwitchVisual(isDark){
+    themeSwitch.setAttribute('aria-checked', String(isDark));
+  }
+  function updateThemeColorMeta(theme){
+    themeColorMetas.forEach(function(m){ m.setAttribute('content', THEME_COLORS[theme]); });
+  }
+  function applyExplicitTheme(theme){
+    document.documentElement.setAttribute('data-theme', theme);
+    setThemeSwitchVisual(theme === 'dark');
+    updateThemeColorMeta(theme);
+    try { localStorage.setItem(THEME_KEY, theme); } catch(e){}
+  }
+
+  var storedTheme = null;
+  try { storedTheme = localStorage.getItem(THEME_KEY); } catch(e){}
+
+  if (storedTheme === 'light' || storedTheme === 'dark') {
+    document.documentElement.setAttribute('data-theme', storedTheme);
+    setThemeSwitchVisual(storedTheme === 'dark');
+    updateThemeColorMeta(storedTheme);
+  } else {
+    // No explicit preference: leave data-theme unset so the existing
+    // @media (prefers-color-scheme) CSS rule keeps tracking the OS live.
+    setThemeSwitchVisual(prefersDarkMQ.matches);
+  }
+
+  themeSwitch.addEventListener('click', function(){
+    var isDarkNow = themeSwitch.getAttribute('aria-checked') === 'true';
+    applyExplicitTheme(isDarkNow ? 'light' : 'dark');
+  });
+
+  prefersDarkMQ.addEventListener('change', function(e){
+    var current = null;
+    try { current = localStorage.getItem(THEME_KEY); } catch(err){}
+    if (current !== 'light' && current !== 'dark') {
+      setThemeSwitchVisual(e.matches);
+    }
   });
 
   /* ---------------- Bookmark tip dismiss (per-device convenience only) ---------------- */
